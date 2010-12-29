@@ -299,3 +299,16 @@ function stc_comm_fill_in_fields($comment_post_ID) {
 		$_POST['email'] = $tw->screen_name.'@fake.twitter.com'; 
 	}
 }
+
+// Add Twitter class to author link
+add_filter('get_comment_author_link', 'stc_comment_author_link');
+function stc_comment_author_link($html) {
+	if (preg_match('/twitter\.com\/[0-9a-zA-Z]+/', $html)) {
+		if (preg_match('/<a[^>]* class=[^>]+>/', $html)) {
+			return preg_replace('/(<a[^>]* class=[\'"]?)/', '\\1twitter_link ' , $html );
+		} else {
+			return preg_replace('/(<a[^>]*)/', '\\1 class="twitter_link"' , $html );
+		}
+	}
+	return $html;
+}
