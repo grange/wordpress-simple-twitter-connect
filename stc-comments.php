@@ -297,7 +297,16 @@ function stc_comm_fill_in_fields($comment_post_ID) {
 		
 		// use an @twitter email address. This shows it's a twitter name, and email to it won't work.
 		$_POST['email'] = $tw->screen_name.'@fake.twitter.com'; 
+
+		// approve comment
+		add_filter('pre_comment_approved', 'stc_comm_approve');
 	}
+}
+
+function stc_comm_approve($approved) {
+	// once only
+	remove_filter('pre_comment_approved', 'stc_comm_approve' );
+	return '1';
 }
 
 // Add Twitter class to author link
